@@ -1,12 +1,16 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -88,10 +92,75 @@ public class App {
         plusButton.setText("Plus");
         plusButton.setBackground(new Color(123, 50, 250));
 
+        plusButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int firstNumber = Integer.parseInt(firstField.getText().trim());
+                int secondNumber = Integer.parseInt(secondField.getText().trim());
+                JOptionPane.showMessageDialog(plusButton, "Your Result : "+(firstNumber+secondNumber));
+            }
+            
+        });
+
+        JButton minusButton = new JButton();
+        minusButton.setText("Minus");
+        minusButton.setBackground(new Color(123, 50, 250));
+
+        minusButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int firstNumber = Integer.parseInt(firstField.getText().trim());
+                int secondNumber = Integer.parseInt(secondField.getText().trim());
+                JOptionPane.showMessageDialog(minusButton, "Your Result : "+(firstNumber-secondNumber));
+            }
+            
+        });
+
+        JButton multiButton = new JButton();
+        multiButton.setBackground(new Color(123,50,250));
+        multiButton.setText("Multiple");
+
+        multiButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int firstNumber = Integer.parseInt(firstField.getText());
+                int secondNumber = Integer.parseInt(secondField.getText());
+                JOptionPane.showMessageDialog(multiButton, "Your Result : "+(firstNumber*secondNumber));
+            }
+        });
+
+        JButton divideButton = new JButton("Divide");
+        divideButton.setBackground(new Color(123,50,250));
+
+        divideButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int secondNumber = Integer.parseInt(secondField.getText());
+
+                if(secondNumber == 0){
+                    JOptionPane.showMessageDialog(divideButton, "Error: Divided by Zero", "Error", 0);
+                } else {
+                    int firstNumber = Integer.parseInt(firstField.getText());
+                    double result = (double) firstNumber/secondNumber;
+                    JOptionPane.showMessageDialog(divideButton, "Your Result : "+ result, "Result", 1);
+                }
+            }
+        });
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.add(plusButton);
+        buttonsPanel.add(minusButton);
+        buttonsPanel.add(multiButton);
+        buttonsPanel.add(divideButton);
+        buttonsPanel.setLayout(new GridLayout(2,2));
+        buttonsPanel.setPreferredSize(new Dimension(500,300));
+
         myPanel.add(firstField);
         myPanel.add(secondField);
         frame.add(myPanel);
-        frame.add(plusButton);
+        frame.add(buttonsPanel);
 
         frame.setVisible(true);
 
