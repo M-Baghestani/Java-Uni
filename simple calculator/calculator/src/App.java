@@ -148,7 +148,7 @@ public class App {
                 }
             }
         });
-        // test
+        // test2
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(plusButton);
         buttonsPanel.add(minusButton);
