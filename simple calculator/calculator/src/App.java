@@ -117,6 +117,7 @@ public class App {
             }
             
         });
+        // test2
 
         JButton multiButton = new JButton();
         multiButton.setBackground(new Color(123,50,250));
@@ -130,6 +131,7 @@ public class App {
                 JOptionPane.showMessageDialog(multiButton, "Your Result : "+(firstNumber*secondNumber));
             }
         });
+        // test2
 
         JButton divideButton = new JButton("Divide");
         divideButton.setBackground(new Color(123,50,250));
@@ -148,7 +150,6 @@ public class App {
                 }
             }
         });
-        // test2
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(plusButton);
         buttonsPanel.add(minusButton);
