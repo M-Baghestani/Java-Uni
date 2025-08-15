@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +7,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -16,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import javax.swing.border.StrokeBorder;
 
 public class App implements ActionListener {
     private JFrame frame;
@@ -29,7 +31,7 @@ public class App implements ActionListener {
     public App() throws FontFormatException, IOException {
         Font customFont = Font
                 .createFont(Font.TRUETYPE_FONT,
-                        new File("G:\\Java Uni\\simple calculator\\calculator\\ApexMk2-LightCondensed.otf"))
+                        new File("G:\\Java Uni\\simple calculator\\calculator\\Folktale.ttf"))
                 .deriveFont(28f);
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
         ImageIcon image = new ImageIcon("G:\\Java Uni\\simple calculator\\calculator\\calculator.png");
@@ -49,7 +51,7 @@ public class App implements ActionListener {
         // textField.setBorder(border);
         textField.setFont(customFont);
         textField.setBackground(new Color(255, 248, 230));
-        textField.setForeground(new Color(0, 0, 0));
+        textField.setForeground(new Color(87, 75, 67));
 
         String[][] buttons = {
                 { "7", "8", "9", "/", },
@@ -71,6 +73,15 @@ public class App implements ActionListener {
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
 
+        float[] dashPattern = { 2f, 2f };
+        Stroke dashed = new BasicStroke(
+                1f,
+                BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER,
+                10f,
+                dashPattern,
+                0f);
+
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
                 gbc.gridx = col;
@@ -81,8 +92,8 @@ public class App implements ActionListener {
                 btn.setFont(customFont);
 
                 btn.setBackground(new Color(255, 248, 230));
-                btn.setForeground(new Color(87,75,67));
-                btn.setBorder(new LineBorder(new Color(150, 131, 120), 1));
+                btn.setForeground(new Color(87, 75, 67));
+                btn.setBorder(new StrokeBorder((BasicStroke) dashed, new Color(150, 131, 120)));
                 btn.addActionListener(this);
                 panel.add(btn, gbc);
             }
