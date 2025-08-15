@@ -1,167 +1,125 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
-public class App {
-    public static void main(String[] args) throws Exception {
-        ImageIcon image = new ImageIcon("calculator.png");
+public class App implements ActionListener {
+    private JFrame frame;
+    private JPanel panel;
+    private JTextField textField;
+    private String operator;
+    private double number1;
+    private double number2;
 
-        JFrame frame = new JFrame();
-        frame.setTitle("Calculator");
+    public App() throws FontFormatException, IOException {
+        Font customFont = Font
+                .createFont(Font.TRUETYPE_FONT,
+                        new File("G:\\Java Uni\\simple calculator\\calculator\\ApexMk2-LightCondensed.otf"))
+                .deriveFont(28f);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(customFont);
+        ImageIcon image = new ImageIcon("G:\\Java Uni\\simple calculator\\calculator\\calculator.png");
+
+        frame = new JFrame();
+        frame.setTitle(("Calculator"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new FlowLayout());
+        frame.setSize(300, 500);
+        frame.setLocationRelativeTo(null);
         frame.setIconImage(image.getImage());
-        frame.setBounds(500, 200, 500, 500);
+        textField = new JTextField();
+        textField.setEditable(false);
+        textField.setPreferredSize(new Dimension(0, 80));
+        frame.add(textField, BorderLayout.NORTH);
+        panel = new JPanel();
+        // Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
+        // textField.setBorder(border);
+        textField.setFont(customFont);
+        textField.setBackground(new Color(255, 248, 230));
+        textField.setForeground(new Color(0, 0, 0));
 
-        JPanel myPanel = new JPanel();
-        myPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 60));
-        myPanel.setBackground(new Color(100, 130, 20));
-        myPanel.setPreferredSize(new Dimension(500, 150));
+        String[][] buttons = {
+                { "7", "8", "9", "/", },
+                { "4", "5", "6", "*", },
+                { "1", "2", "3", "-", },
+                { "0", "C", "=", "+", },
+        };
 
-        JTextField firstField = new JTextField();
-        JTextField secondField = new JTextField();
+        // for (String text : buttons) {
+        // JButton button = new JButton(text);
+        // button.setFont(new Font("Arial", Font.PLAIN, 24));
+        // button.addActionListener(this);
+        // panel.add(button);
+        // }
+        panel.setLayout(new GridBagLayout());
 
-        // First Text Field
-        firstField.setText("First Number...");
-        firstField.setLayout(new FlowLayout());
-        firstField.setPreferredSize(new Dimension(150, 30));
-        firstField.setBackground(new Color(123, 50, 250));
-        firstField.setHorizontalAlignment(JTextField.CENTER);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        // Second Text Field
-        secondField.setText("Second Number...");
-        secondField.setLayout(new FlowLayout());
-        secondField.setPreferredSize(new Dimension(150, 30));
-        secondField.setBackground(new Color(123, 50, 250));
-        secondField.setHorizontalAlignment(JTextField.CENTER);
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 4; col++) {
+                gbc.gridx = col;
+                gbc.gridy = row;
+                JButton btn = new JButton(buttons[row][col]);
+                // btn.setFont(new Font("Jake Stencil Thin", Font.PLAIN, 32));
 
-        // Change Listener
-        frame.addWindowFocusListener(new WindowAdapter() {
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                myPanel.requestFocusInWindow();
+                btn.setFont(customFont);
+
+                btn.setBackground(new Color(255, 248, 230));
+                btn.setForeground(new Color(150, 131, 120));
+                btn.setBorder(new LineBorder(new Color(150, 131, 120), 1));
+                btn.addActionListener(this);
+                panel.add(btn, gbc);
             }
-        });
-        // Focus Listener
+        }
 
-        firstField.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent e) {
-                if (firstField.getText().equals("First Number...")) {
-                    firstField.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                if (firstField.getText().trim().isEmpty()) {
-                    firstField.setText("First Number...");
-                }
-            }
-        });
-
-        secondField.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent e) {
-                if (secondField.getText().equals("Second Number...")) {
-                    secondField.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                if (secondField.getText().trim().isEmpty()) {
-                    secondField.setText("Second Number...");
-                }
-            }
-        });
-
-        JButton plusButton = new JButton();
-        plusButton.setText("Plus");
-        plusButton.setBackground(new Color(123, 50, 250));
-
-        plusButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int firstNumber = Integer.parseInt(firstField.getText().trim());
-                int secondNumber = Integer.parseInt(secondField.getText().trim());
-                JOptionPane.showMessageDialog(plusButton, "Your Result : "+(firstNumber+secondNumber));
-            }
-            
-        });
-
-        JButton minusButton = new JButton();
-        minusButton.setText("Minus");
-        minusButton.setBackground(new Color(123, 50, 250));
-
-        minusButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int firstNumber = Integer.parseInt(firstField.getText().trim());
-                int secondNumber = Integer.parseInt(secondField.getText().trim());
-                JOptionPane.showMessageDialog(minusButton, "Your Result : "+(firstNumber-secondNumber));
-            }
-            
-        });
-
-        JButton multiButton = new JButton();
-        multiButton.setBackground(new Color(123,50,250));
-        multiButton.setText("Multiple");
-
-        multiButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int firstNumber = Integer.parseInt(firstField.getText());
-                int secondNumber = Integer.parseInt(secondField.getText());
-                JOptionPane.showMessageDialog(multiButton, "Your Result : "+(firstNumber*secondNumber));
-            }
-        });
-
-        JButton divideButton = new JButton("Divide");
-        divideButton.setBackground(new Color(123,50,250));
-
-        divideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                int secondNumber = Integer.parseInt(secondField.getText());
-
-                if(secondNumber == 0){
-                    JOptionPane.showMessageDialog(divideButton, "Error: Divided by Zero", "Error", 0);
-                } else {
-                    int firstNumber = Integer.parseInt(firstField.getText());
-                    double result = (double) firstNumber/secondNumber;
-                    JOptionPane.showMessageDialog(divideButton, "Your Result : "+ result, "Result", 1);
-                }
-            }
-        });
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.add(plusButton);
-        buttonsPanel.add(minusButton);
-        buttonsPanel.add(multiButton);
-        buttonsPanel.add(divideButton);
-        buttonsPanel.setLayout(new GridLayout(2,2));
-        buttonsPanel.setPreferredSize(new Dimension(500,300));
-
-        myPanel.add(firstField);
-        myPanel.add(secondField);
-        frame.add(myPanel);
-        frame.add(buttonsPanel);
+        frame.add(panel, BorderLayout.CENTER);
 
         frame.setVisible(true);
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.charAt(0) >= '0' && command.charAt(0) <= '9') {
+            textField.setText(textField.getText() + command);
+        } else if (command.equals("C")) {
+            number1 = number2 = 0;
+            textField.setText("");
+            operator = "";
+        } else if (command.equals("=")) {
+            number2 = Double.parseDouble(textField.getText());
+            switch (operator) {
+                case "+" -> textField.setText(String.valueOf(number1 + number2));
+                case "-" -> textField.setText(String.valueOf(number1 - number2));
+                case "/" -> textField.setText(String.valueOf(number1 / number2));
+                case "*" -> textField.setText(String.valueOf(number1 * number2));
+            }
+            operator = "";
+        } else {
+            operator = command;
+            number1 = Double.parseDouble(textField.getText());
+            textField.setText("");
+
+        }
+    }
+
+    public static void main(String[] args) throws FontFormatException, IOException {
+        new App();
     }
 }
