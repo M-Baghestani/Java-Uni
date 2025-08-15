@@ -81,7 +81,7 @@ public class App implements ActionListener {
                 btn.setFont(customFont);
 
                 btn.setBackground(new Color(255, 248, 230));
-                btn.setForeground(new Color(150, 131, 120));
+                btn.setForeground(new Color(87,75,67));
                 btn.setBorder(new LineBorder(new Color(150, 131, 120), 1));
                 btn.addActionListener(this);
                 panel.add(btn, gbc);
